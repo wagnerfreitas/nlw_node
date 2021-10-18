@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, response } from 'express';
 
 import { SettingService } from '../services/SettingService';
 
@@ -17,6 +17,27 @@ class SettingController {
         message: e.message
       });
     }
+  }
+
+  async findByUserName(request: Request, response: Response) {
+    const { username } = request.params;
+
+    const settingService = new SettingService();
+
+    const setting = await settingService.findByUserName(username);
+
+    return response.json(setting);
+  }
+
+  async update(request: Request, response: Response) {
+    const { username } = request.params;
+    const { chat } = request.body;
+
+    const settingService = new SettingService();
+
+    await settingService.update(username, chat);
+
+    return response.json();
   }
 }
 
